@@ -63,7 +63,9 @@ function ContextProvider(props) {
       try {
         if (searchTerm && searchTerm.length > 0) {
           setPokemons(null);
-          const pokemonData = await services.getPokemonById(searchTerm);
+          const pokemonData = await services.getPokemonById(
+            searchTerm.toLowerCase()
+          );
           console.log("pokemonData");
           console.log(pokemonData);
           setError(false);
