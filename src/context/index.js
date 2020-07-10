@@ -47,44 +47,54 @@ function ContextProvider(props) {
 
   const nextPage = useCallback(() => {
     loadPokemonList({ key: "next", url: pagesInfo.next });
+  }, [loadPokemonList, pagesInfo.next]);
+
+  const prevPage = useCallback(() => {
+    loadPokemonList({ key: "prev", url: pagesInfo.prev });
+  }, [loadPokemonList, pagesInfo.prev]);
+
+  const updateSearch = useCallback((e) => {
+    setSearchTerm(e.target.value);
   }, []);
 
-  const prevPage = () => {
-    loadPokemonList({ key: "prev", url: pagesInfo.prev });
-  };
-
-  const updateSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const resetSearch = () => {
+  const resetSearch = useCallback(() => {
     setSearchTerm("");
     setError(false);
     loadPokemonList({ key: "next", url: null, reset: true });
-  };
+  }, [loadPokemonList]);
 
-  const loadPokemon = (e) => {
-    e.preventDefault();
-    async function loadData() {
-      try {
-        if (searchTerm && searchTerm.length > 0) {
+  const loadPokemon = useCallback(
+    (e) => {
+      e.preventDefault();
+      async function loadData() {
+        try {
+          if (searchTerm && searchTerm.length > 0) {
+            setPokemons(null);
+            const pokemonData = await services.getPokemonById(
+              searchTerm.toLowerCase()
+            );
+            setError(false);
+            setPokemons([pokemonData]);
+            setPagesInfo({
+              prev: null,
+              next: null,
+              count: 1,
+              totalPages: 1,
+              page: 1,
+            });
+          } else {
+            resetSearch();
+          }
+        } catch (err) {
+          setError(true);
           setPokemons(null);
-          const pokemonData = await services.getPokemonById(
-            searchTerm.toLowerCase()
-          );
-          setError(false);
-          setPokemons([pokemonData]);
-        } else {
-          resetSearch();
+          setSearchTerm("");
         }
-      } catch (err) {
-        setError(true);
-        setPokemons(null);
-        setSearchTerm("");
       }
-    }
-    loadData();
-  };
+      loadData();
+    },
+    [resetSearch, searchTerm]
+  );
 
   const context = {
     pokemons,

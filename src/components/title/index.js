@@ -5,7 +5,7 @@ import { Typography } from "@material-ui/core";
 
 import { SearchContext } from "../../context";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   title: {
     flexGrow: 1,
   },
