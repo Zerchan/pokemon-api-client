@@ -62,8 +62,8 @@ function Details(props) {
               {utils.capitalize(pokemon.name)}
             </Typography>
             <Box>
-              <img src={pokemon.sprites.front_default} />
-              <img src={pokemon.sprites.back_default} />
+              <img alt="pokemon front" src={pokemon.sprites.front_default} />
+              <img alt="pokemon back" src={pokemon.sprites.back_default} />
             </Box>
             <Box>
               {pokemon.types.map((item) => (
