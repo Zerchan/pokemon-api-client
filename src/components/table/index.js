@@ -34,7 +34,24 @@ const useStyles = makeStyles((theme) => ({
 
 function Table() {
   const classes = useStyles();
-  const { pokemons } = useContext(SearchContext);
+  const { pokemons, error } = useContext(SearchContext);
+
+  if (error) {
+    return (
+      <Box
+        py={2}
+        px={1}
+        display="flex"
+        alignItems="center"
+        flexDirection="column"
+      >
+        <Typography>Pokemon Not Found</Typography>
+        <Typography variant="caption">
+          Please use the exact Pokemon name
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box py={2} px={1}>

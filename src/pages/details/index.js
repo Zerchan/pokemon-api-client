@@ -94,7 +94,7 @@ function Details(props) {
                 </ListItem>
               ))}
             </List>
-            <Typography variant="h5">Abilities</Typography>
+            <Typography variant="h5">Base Abilities</Typography>
             <List>
               {pokemon.abilities.map((item) => (
                 <ListItem
