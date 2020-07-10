@@ -45,9 +45,9 @@ function ContextProvider(props) {
     loadPokemonList({ key: "next", url: null });
   }, [loadPokemonList]);
 
-  const nextPage = () => {
+  const nextPage = useCallback(() => {
     loadPokemonList({ key: "next", url: pagesInfo.next });
-  };
+  }, []);
 
   const prevPage = () => {
     loadPokemonList({ key: "prev", url: pagesInfo.prev });
@@ -55,6 +55,12 @@ function ContextProvider(props) {
 
   const updateSearch = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const resetSearch = () => {
+    setSearchTerm("");
+    setError(false);
+    loadPokemonList({ key: "next", url: null, reset: true });
   };
 
   const loadPokemon = (e) => {
@@ -66,16 +72,15 @@ function ContextProvider(props) {
           const pokemonData = await services.getPokemonById(
             searchTerm.toLowerCase()
           );
-          console.log("pokemonData");
-          console.log(pokemonData);
           setError(false);
           setPokemons([pokemonData]);
         } else {
-          loadPokemonList({ key: "next", url: null, reset: true });
+          resetSearch();
         }
       } catch (err) {
         setError(true);
         setPokemons(null);
+        setSearchTerm("");
       }
     }
     loadData();
@@ -88,6 +93,7 @@ function ContextProvider(props) {
     error,
     loadPokemon,
     updateSearch,
+    resetSearch,
     nextPage,
     prevPage,
   };
